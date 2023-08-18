@@ -38,6 +38,8 @@
      font-size: 2rem;
      text-align: end;
      letter-spacing: 2px;
+     overflow-x: hidden;
+     
  }
 
  .rows {
