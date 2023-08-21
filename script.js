@@ -1,75 +1,84 @@
 const display = document.querySelector('.display');
 const inputBtn = document.querySelectorAll('.input');
 const clearBtn = document.querySelector('#clear');
-let displayContent = '';
+const dummy = document.querySelector('.dummy');
+const equal = document.querySelector('#equal');
+let attempts = 0;
+let firstNum = '';
+let secondNum = '';
+let sign = '';
+let displayContent = '';  // to store content of clicked button 
 
-inputBtn.forEach((btn)=> {
- 
-    
+inputBtn.forEach((btn) => {
 
 
-    btn.addEventListener('click', (e)=>{
+
+
+    btn.addEventListener('click', () => {
         
-    
-        displayContent += e.target.value;
-        display.innerText= displayContent;
+        if (display.firstChild === dummy) {
+            display.removeChild(dummy);
+        }
 
-        console.log(displayContent);
+        if (btn.classList.contains('sign')) {
+            
+            
+            firstNum = displayContent;
+            sign = btn.id;
+            displayContent = '';
+            
+            
+           
+
+        }
+        else {
+            displayContent += btn.value;
+        }
+
+        display.innerText += btn.value;
+        
+      
     })
 
 
 });
 
-clearBtn.addEventListener('click',() =>{
 
-    displayContent='';
-    display.innerText='';
+
+equal.addEventListener('click', () =>{
+
+
+    secondNum = displayContent;
+    
+   display.textContent=     `${operate(sign)}`;
+   displayContent = operate(sign);
+
+});
+
+clearBtn.addEventListener('click', () => {
+       firstNum='';
+       secondNum='';
+       sign='';
+    displayContent = '';
+    display.innerText = '';
+    display.appendChild(dummy);
 
 });
 
 
 
+function operate(sign) {
 
-const firstNum = '';
-const secondNum ='';
-const sign = '';
+    switch (sign) {
 
-function add(a, b)
-{
-    return a + b;
-}
-
-function subtract(a, b)
-{
-
-    return a - b;
-}
-
-function multiply(a ,b)
-{
-
-    return a * b;
-}
-
-function divide( a , b)
-{
-       return b===0 ? 'NOT PERMITTED' : a/b ;
-}
-
-
-function operate( sign )
-{
-
- switch (sign) {
-
-  case '+':
-   return add(firstNum, secondNum);  
-   case '-':
-   return subtract(firstNum, secondNum);
-   case '*':
-   return multiply(firstNum, secondNum);
-   case '-':
-   return divide(firstNum, secondNum);
- }
+        case 'add':
+            return +firstNum + +secondNum;
+        case 'subtract':
+            return +firstNum - +secondNum;
+        case 'multiply':
+            return  +firstNum * +secondNum ;
+        case 'divide':
+            return divide +firstNum === 0 ? 'NOT PERMITTED' : +firstNum / +secondNum;
+    }
 }
 
