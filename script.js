@@ -2,7 +2,7 @@ const display = document.querySelector('.display');
 const inputBtn = document.querySelectorAll('.input');
 const clearBtn = document.querySelector('#clear');
 const dummy = document.querySelector('.dummy');
-const equal = document.querySelector('#equal');
+const  deleteBtn = document.querySelector('#delete');
 let attempts = 0;
 let firstNum = '';
 let secondNum = '';
@@ -27,7 +27,7 @@ inputBtn.forEach((btn) => {
                 displayContent = '';
                 attempts++;
                 display.innerText = firstNum + btn.value;
-
+                 
             
             }
 
@@ -49,7 +49,7 @@ inputBtn.forEach((btn) => {
                              
             }
 
-
+          
 
         }
         else {
@@ -74,7 +74,7 @@ equal.addEventListener('click', () => {
 });
 
 function operate(a, b, sign) {
-
+  
 
     b = Number(b);
     a = Number(a);
@@ -95,8 +95,12 @@ function operate(a, b, sign) {
             result = b === 0 ? 'invalid' : a / b;
             break;
         default:
-            result = a;
+            result = b;
     }
+ 
+
+      if(result === 'invalid')
+      {return result}
 
     return result % 1 === 0 ? result : result.toFixed(2);
 }
@@ -113,6 +117,42 @@ clearBtn.addEventListener('click', () => {
 });
 
 
+deleteBtn.addEventListener('click',()=>{
+ let content = display.textContent;
+ let signArr = ["&divide;", "&times", "&minus;","&plus;" ];
 
+ if(displayContent)
+    {
+        displayContent = displayContent.slice(0, -1);
+        console.log(displayContent);
+    }
+  else if(sign)
+{
+
+    sign = '';
+    console.log(sign);
+}
+else{
+    firstNum = firstNum.slice(0, -1);
+    console.log(firstNum);
+}
+
+
+
+
+
+ if(content.length !== 1)
+ {
+    display.textContent =content.slice(0, -1);   
+}
+ else{
+
+    display.innerText = '';
+    if (display.firstChild !== dummy) {
+        display.appendChild(dummy);
+    }
+ }
+
+} );
 
 
