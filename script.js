@@ -5,7 +5,6 @@ const dummy = document.querySelector('.dummy');
 const  deleteBtn = document.querySelector('#delete');
 let attempts = 0;
 let firstNum = '';
-let secondNum = '';
 let sign = '';
 let displayContent = '';  // to store content of clicked button 
 
@@ -34,7 +33,7 @@ inputBtn.forEach((btn) => {
             else {
 
                 if (displayContent !== '') {
-                    firstNum = operate(firstNum, displayContent, sign);
+                    firstNum = (operate(firstNum, displayContent, sign)).toString();
                     sign = btn.id;
                     display.innerText = firstNum + btn.value;
                     displayContent ='';
@@ -67,7 +66,7 @@ inputBtn.forEach((btn) => {
 
 equal.addEventListener('click', () => {
 
-    displayContent = operate(firstNum, displayContent, sign);
+    displayContent = (operate(firstNum, displayContent, sign)).toString();
     display.textContent = displayContent;
     attempts = 0;
 
@@ -119,8 +118,7 @@ clearBtn.addEventListener('click', () => {
 
 deleteBtn.addEventListener('click',()=>{
  let content = display.textContent;
- let signArr = ["&divide;", "&times", "&minus;","&plus;" ];
-
+ 
  if(displayContent)
     {
         displayContent = displayContent.slice(0, -1);
