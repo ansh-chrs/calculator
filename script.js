@@ -1,33 +1,50 @@
 const display = document.querySelector('.display');
 const inputBtn = document.querySelectorAll('.input');
 const clearBtn = document.querySelector('#clear');
-const dummy = document.querySelector('.dummy');
-const  deleteBtn = document.querySelector('#delete');
+const deleteBtn = document.querySelector('#delete');
 let attempts = 0;
 let firstNum = '';
 let sign = '';
 let displayContent = '';  // to store content of clicked button 
-
+let decimalCounter = 0;
 inputBtn.forEach((btn) => {
 
     btn.addEventListener('click', () => {
-                   
-        if (display.firstChild === dummy) {
-            display.removeChild(dummy);
+
+        if (displayContent === `NOT ALLOWED!!` || firstNum === `NOT ALLOWED!!`) {
+            return;
+        }
+
+        if (display.textContent === '0' && !isNaN(btn.value))  //handling place holder zero 
+        {
+            display.textContent = '';
+        }
+
+        if (displayContent === 'invalid') {
+            display.textContent = '';
+            displayContent = '';
+        }
+
+        if (btn.id === 'decimal') {
+            console.log(decimalCounter);
+            if (decimalCounter === 0) { decimalCounter++; }
+            else {
+                return;
+            }
         }
 
         if (btn.classList.contains('sign')) {
 
-                    // debugger;
+            decimalCounter = 0;
             if (attempts === 0) {
-               
+
                 firstNum = displayContent;
                 sign = btn.id;
                 displayContent = '';
                 attempts++;
                 display.innerText = firstNum + btn.value;
-                 
-            
+
+
             }
 
             else {
@@ -36,44 +53,50 @@ inputBtn.forEach((btn) => {
                     firstNum = (operate(firstNum, displayContent, sign)).toString();
                     sign = btn.id;
                     display.innerText = firstNum + btn.value;
-                    displayContent ='';
-                    
+                    displayContent = '';
+
                 }
                 else {
                     sign = btn.id;
                     display.innerText = firstNum + btn.value;
-                    
-                  
+
+
                 }
-                             
+
             }
-
-          
-
         }
         else {
             displayContent += btn.value;
             display.innerText += btn.value;
         }
-
-        
-
     })
-
-
 });
 
 
 equal.addEventListener('click', () => {
 
+    if (displayContent === `NOT ALLOWED!!` || firstNum === `NOT ALLOWED!!`) {
+        return;
+    }
+
     displayContent = (operate(firstNum, displayContent, sign)).toString();
+
+
+
     display.textContent = displayContent;
     attempts = 0;
+    firstNum = '';
+    sign = '';
+    decimalCounter = 0;
+
+    if (Number(displayContent) % 1 !== 0) {
+        ++decimalCounter;
+    }
+
 
 });
 
 function operate(a, b, sign) {
-  
 
     b = Number(b);
     a = Number(a);
@@ -91,15 +114,13 @@ function operate(a, b, sign) {
             result = a * b;
             break;
         case 'divide':
-            result = b === 0 ? 'invalid' : a / b;
+            result = b === 0 ?`NOT ALLOWED!!` : a / b;
             break;
         default:
             result = b;
     }
- 
 
-      if(result === 'invalid')
-      {return result}
+    if (result === `NOT ALLOWED!!`) { return result }
 
     return result % 1 === 0 ? result : result.toFixed(2);
 }
@@ -107,50 +128,61 @@ function operate(a, b, sign) {
 
 clearBtn.addEventListener('click', () => {
     firstNum = '';
-    secondNum = '';
     sign = '';
     displayContent = '';
-    display.innerText = '';
-    display.appendChild(dummy);
+    display.innerText = '0';
+    decimalCounter = 0;
     attempts = 0;
 });
 
 
-deleteBtn.addEventListener('click',()=>{
- let content = display.textContent;
- 
- if(displayContent)
-    {
+deleteBtn.addEventListener('click', () => {
+    let content = display.textContent;
+
+    if (content === `NOT ALLOWED!!`) {  // To handle infinity
+        firstNum = '';
+        sign = '';
+        displayContent = '';
+        display.innerText = '0';
+        decimalCounter = 0;
+        attempts = 0;
+        console.log('came');
+    }
+
+
+  else{
+
+    if (displayContent) {
+
+        if (displayContent.slice(-1) == '.') {
+            decimalCounter = 0;
+        }
+
         displayContent = displayContent.slice(0, -1);
-        console.log(displayContent);
+
     }
-  else if(sign)
-{
+    else if (sign) {
+        sign = '';
 
-    sign = '';
-    console.log(sign);
-}
-else{
-    firstNum = firstNum.slice(0, -1);
-    console.log(firstNum);
-}
-
-
-
-
-
- if(content.length !== 1)
- {
-    display.textContent =content.slice(0, -1);   
-}
- else{
-
-    display.innerText = '';
-    if (display.firstChild !== dummy) {
-        display.appendChild(dummy);
     }
- }
+    else {
 
-} );
+        if (firstNum.slice(-1) == '.') {
+            decimalCounter = 0;
+        }
+        firstNum = firstNum.slice(0, -1);
+    }
+
+
+    if (content.length !== 1) {
+        display.textContent = content.slice(0, -1);
+    }
+    else {
+        display.innerText = '0';
+    }
+  }
+
+
+});
 
 
