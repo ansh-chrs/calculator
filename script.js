@@ -97,32 +97,38 @@ equal.addEventListener('click', () => {
 });
 
 function operate(a, b, sign) {
-
+  debugger;
     b = Number(b);
     a = Number(a);
-    let result;
 
-    switch (sign) {
+   
+  
+        let result;
 
-        case 'add':
-            result = a + b;
-            break;
-        case 'subtract':
-            result = a - b;
-            break;
-        case 'multiply':
-            result = a * b;
-            break;
-        case 'divide':
-            result = b === 0 ?`NOT ALLOWED!!` : a / b;
-            break;
-        default:
-            result = b;
-    }
+        switch (sign) {
 
-    if (result === `NOT ALLOWED!!`) { return result }
+            case 'add':
+                result = a + b;
+                break;
+            case 'subtract':
+                result = a - b;
+                break;
+            case 'multiply':
+                result = a * b;
+                break;
+            case 'divide':
+                result = b === 0 ? `NOT ALLOWED!!` : a / b;
+                break;
+            default:
+                result = b;
+        }
 
-    return result % 1 === 0 ? result : result.toFixed(2);
+        if (result === `NOT ALLOWED!!`) { return result }
+         
+       if(isNaN(result)){return `NOT ALLOWED!!`;}
+
+        return result % 1 === 0 ? result : result.toFixed(2);
+    
 }
 
 
@@ -146,41 +152,41 @@ deleteBtn.addEventListener('click', () => {
         display.innerText = '0';
         decimalCounter = 0;
         attempts = 0;
-        console.log('came');
-    }
-
-
-  else{
-
-    if (displayContent) {
-
-        if (displayContent.slice(-1) == '.') {
-            decimalCounter = 0;
-        }
-
-        displayContent = displayContent.slice(0, -1);
 
     }
-    else if (sign) {
-        sign = '';
 
-    }
+
     else {
 
-        if (firstNum.slice(-1) == '.') {
-            decimalCounter = 0;
+        if (displayContent) {
+
+            if (displayContent.slice(-1) == '.') {
+                decimalCounter = 0;
+            }
+
+            displayContent = displayContent.slice(0, -1);
+
         }
-        firstNum = firstNum.slice(0, -1);
-    }
+        else if (sign) {
+            sign = '';
+
+        }
+        else {
+
+            if (firstNum.slice(-1) == '.') {
+                decimalCounter = 0;
+            }
+            firstNum = firstNum.slice(0, -1);
+        }
 
 
-    if (content.length !== 1) {
-        display.textContent = content.slice(0, -1);
+        if (content.length !== 1) {
+            display.textContent = content.slice(0, -1);
+        }
+        else {
+            display.innerText = '0';
+        }
     }
-    else {
-        display.innerText = '0';
-    }
-  }
 
 
 });
